@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Anime;
 
 class AnimesController extends Controller 
 {
@@ -20,5 +21,15 @@ class AnimesController extends Controller
     public function create () 
     {
         return view('animes.create');
+    }
+
+    public function store (Request $request)
+    {
+        $nome = $request -> nome;
+        $anime = new Anime();
+        $anime -> nome = $nome;
+        var_dump($anime->save());
+
+
     }
 }
