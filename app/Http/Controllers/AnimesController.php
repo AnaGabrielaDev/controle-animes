@@ -3,19 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Anime;
+use App\Models\Anime;
 
 class AnimesController extends Controller 
 {
-    public function index (Request $request) 
+    public function index () 
     {
-        $animes = [
-            'Akame ga kill',
-            'death note',
-            'to aru majutsu no index'
-        ];
+        $animes = Anime::all();
 
-        return view('animes.index', compact(var_name:'animes'));
+        return view('animes.index', compact('animes'));
     }
 
     public function create () 
