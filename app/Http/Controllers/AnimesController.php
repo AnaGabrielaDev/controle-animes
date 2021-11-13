@@ -9,7 +9,7 @@ class AnimesController extends Controller
 {
     public function index () 
     {
-        $animes = Anime::all();
+        $animes = Anime::query()->orderBy('nome')->get();
 
         return view('animes.index', compact('animes'));
     }
@@ -21,11 +21,9 @@ class AnimesController extends Controller
 
     public function store (Request $request)
     {
-        $nome = $request -> nome;
-        $anime = new Anime();
-        $anime -> nome = $nome;
-        var_dump($anime->save());
+        $anime = Anime::create($request->all());
 
+        return redirect('/animes');
 
     }
 }
