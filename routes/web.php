@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::get('/animes',[AnimesController::class, 'index']);
 Route::get('/animes/create',[AnimesController::class, 'create']);
 Route::post('/animes/create',[AnimesController::class, 'store']);
+Route::post('/animes/remove/{id}', [AnimesController::class,'destroy']);
 
     
     
