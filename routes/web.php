@@ -18,9 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/ola', function(){
-    echo "ola mundooo";
-});
 
 Route::get('/animes',[AnimesController::class, 'index']);
 Route::get('/animes/create',[AnimesController::class, 'create']);

@@ -5,7 +5,7 @@ Animes
 @endsection
 
 @section('content')
-<a href="/animes/create" class="btn btn-dark mb-2">Adcionar Anime</a>
+<a href="/animes/create" class="btn btn-dark mb-2">Adicionar Anime</a>
 
 <ul class="list-group">
     @foreach ($animes as $anime)
