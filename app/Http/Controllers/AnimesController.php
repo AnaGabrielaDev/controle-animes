@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnimesFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Anime;
 
@@ -20,7 +21,7 @@ class AnimesController extends Controller
         return view('animes.create');
     }
 
-    public function store (Request $request)
+    public function store (AnimesFormRequest $request)
     {
         $anime = Anime::create($request->all());
         $request->session()->flash ('message',"{$anime->nome}, {$anime->id} foi criando com sucesso");
