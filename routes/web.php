@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnimesController;
+use App\Http\Controllers\TemporadasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,7 @@ Route::get('/animes',[AnimesController::class, 'index']);
 Route::get('/animes/create',[AnimesController::class, 'create']);
 Route::post('/animes/create',[AnimesController::class, 'store']);
 Route::post('/animes/remove/{id}', [AnimesController::class,'destroy']);
+Route::get('/animes/{animeId}/temporadas', [TemporadasController::class, 'index']);
 
     
     
