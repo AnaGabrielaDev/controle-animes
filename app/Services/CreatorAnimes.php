@@ -3,21 +3,45 @@
 namespace App\Services;
 
 use App\Models\Anime;
+use Illuminate\Support\Facades\DB;
 
 class CreatorAnimes
 {
-    public function createAnime(string $nome, int $temporadas, int $episodios) : Anime
+    private function createAnime(string $nome)
     {
-        $anime = Anime::create(['nome' => $nome]);
-        for ($i = 0; $i <= $temporadas; $i++) {
-            $temporadas = $anime->temporadas()->create(['numero' => $i]);
-
-
-            for ($j = 1; $j <= $episodios; $j++) {
-                $temporadas->episodios()->create(['numero' => $j]);
-            }
-        }
-        return $anime;
-
+        return Anime::create(['nome' => $nome]);
     }
+
+    private function createTemporada (Anime $anime, int $temporadas, int $episodios)
+    {
+        for ($i = 1; $i <= $temporadas; $i++){
+            $temporada = $anime->temporadas()->create([
+                'numero'=>$i
+            ]);
+
+            $this->createEpisodio($temporada, $episodios);
+        }
+    }
+
+    private function createEpisodio ($temporada, int $episodios)
+    {
+        for ($j = 1; $j <= $episodios; $j++){
+            $temporada->episodios()->create([
+                'numero'=>$j
+            ]);
+        }
+    }
+
+    public function execute (string $nome, int $temporada, int $episodios): Anime
+    {
+        DB::beginTransaction();
+
+        $anime = $this->createAnime($nome);
+        $this->createTemporada($anime, $temporada, $episodios);
+
+        DB::commit();
+
+        return $anime;
+    }
+
 }
