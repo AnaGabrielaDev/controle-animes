@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Episodios extends Model
 {
+    public $timestamps = false;
+    protected $fillable = ['numero'];
+
     public function temporada ()
     {
         return $this->BelongsTo(Temporada::class);
