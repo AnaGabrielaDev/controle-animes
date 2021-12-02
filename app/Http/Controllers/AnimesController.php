@@ -8,6 +8,7 @@ use App\Models\Anime;
 use App\Models\Episodios;
 use App\Models\Temporada;
 use App\Services\CreatorAnimes;
+use App\Services\RemoverAnimes;
 
 class AnimesController extends Controller 
 {
@@ -29,24 +30,27 @@ class AnimesController extends Controller
         $nome = $request->get('nome');
         $temporadas = $request->get('temporadas');
         $episodios = $request->get('episodios');
-        $request->session()->flash ('message',"{$nome} foi criando com sucesso");
 
-        return redirect('/animes');
+        try {
+            $creatorAnimes->execute($nome, $temporadas, $episodios);
+        }catch (\Exception $error) {
+            return redirect('animes')
+                ->with('status', false)
+                ->with('message', 'Erro ao cadastrar o Anime');
+        }
+
+        return redirect('animes')
+            ->with('status', true)
+            ->with('message', 'Anime cadastrado com sucesso');
+        //$request->session()->flash ('message',"{$nome} foi criando com sucesso");
+
+       // return redirect('/animes');
 
     }
 
-    public function destroy (Request $request)
+    public function destroy (Request $request, RemoverAnimes $removerAnimes)
     {
-        $anime = Anime::find($request->id);
-        $nomeAnime = $anime->nome;
-        $anime->temporadas->each(function (Temporada $temporada) {
-            $temporada->episodios->each(function (Episodios $episodios){
-                $episodios->delete();
-            });
-            $temporada->delete();
-        });
-        $anime->delete();
-
+        $nomeAnime = $removerAnimes->removeAnimes($request->id);
         $request->session()->flash ('message', "A exclusão do anime $nomeAnime foi executada com sucesso");
     
         return redirect('/animes');
