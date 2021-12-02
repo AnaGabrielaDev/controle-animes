@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AnimesFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Anime;
+use App\Models\Episodios;
+use App\Models\Temporada;
+use App\Services\CreatorAnimes;
 
 class AnimesController extends Controller 
 {
@@ -21,10 +24,12 @@ class AnimesController extends Controller
         return view('animes.create');
     }
 
-    public function store (AnimesFormRequest $request)
+    public function store (AnimesFormRequest $request, CreatorAnimes $creatorAnimes)
     {
-        $anime = Anime::create($request->all());
-        $request->session()->flash ('message',"{$anime->nome}, {$anime->id} foi criando com sucesso");
+        $nome = $request->get('nome');
+        $temporadas = $request->get('temporadas');
+        $episodios = $request->get('episodios');
+        $request->session()->flash ('message',"{$nome} foi criando com sucesso");
 
         return redirect('/animes');
 
@@ -32,8 +37,17 @@ class AnimesController extends Controller
 
     public function destroy (Request $request)
     {
-        Anime::destroy($request->id);
-        $request->session()->flash ('message', "exclusão executada com sucesso");
+        $anime = Anime::find($request->id);
+        $nomeAnime = $anime->nome;
+        $anime->temporadas->each(function (Temporada $temporada) {
+            $temporada->episodios->each(function (Episodios $episodios){
+                $episodios->delete();
+            });
+            $temporada->delete();
+        });
+        $anime->delete();
+
+        $request->session()->flash ('message', "A exclusão do anime $nomeAnime foi executada com sucesso");
     
         return redirect('/animes');
     }
