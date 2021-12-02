@@ -18,12 +18,21 @@ Animes
     @foreach ($animes as $anime)
     <li class="list-group-item">
         {{ $anime->nome }}
-        <form method="post" action="/animes/remove/{{$anime->id}}" onsubmit="return confirm ('Tem certeza que deseja excluir? {{$anime->nome}}')">
-            @csrf
-            <button class="btn btn-danger">
-                excluir
-            </button>
-        </form>
+
+        <span class="d-flex">
+            <a href="/animes/{{ $anime->id }}/temporadas" class="btn btn-info btn-sm mr-1">
+                <i class="fas fa-external-link-alt"></i>
+            </a>
+        
+
+            <form method="post" action="/animes/remove/{{$anime->id}}" onsubmit="return confirm ('Tem certeza que deseja excluir? {{$anime->nome}}')">
+                @csrf
+                <button class="btn btn-danger">
+                    excluir
+                </button>
+            </form>
+        </span>
+
     </li>
 
     @endforeach
