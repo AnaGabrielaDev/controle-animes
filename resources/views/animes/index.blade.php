@@ -16,19 +16,23 @@ Animes
 
 <ul class="list-group">
     @foreach ($animes as $anime)
-    <li class="list-group-item">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
         {{ $anime->nome }}
 
         <span class="d-flex">
-            <a href="/animes/{{ $anime->id }}/temporadas" class="btn btn-info btn-sm mr-1">
-                <i class="fas fa-external-link-alt"></i>
+            <button class="btn btn-info btn-sm mr-1" onclick="toggleInput({{$anime->id}})">
+                <i class="bi bi-check-lg"></i>
+            </button>
+
+            <a href="/animes/{{ $anime->id }}/temporadas" class="btn btn-info mx-2">
+                <i class="bi bi-pen"></i>
             </a>
         
 
             <form method="post" action="/animes/remove/{{$anime->id}}" onsubmit="return confirm ('Tem certeza que deseja excluir? {{$anime->nome}}')">
                 @csrf
-                <button class="btn btn-danger">
-                    excluir
+                <button class="btn btn-danger mx-2">
+                    <i class="bi bi-trash"></i>
                 </button>
             </form>
         </span>
