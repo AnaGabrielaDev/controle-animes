@@ -26,6 +26,6 @@ class CreateTableAnimes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_animes');
+        Schema::dropIfExists('animes');
     }
 }
